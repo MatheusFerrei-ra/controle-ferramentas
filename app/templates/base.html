@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Controle de Ferramentas</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
@@ -12,7 +13,27 @@
 
 <nav class="navbar navbar-dark bg-primary px-4">
     <a class="navbar-brand fw-bold" href="/">Controle de Ferramentas</a>
-    <span class="text-white">Gestão de Patrimônio</span>
+
+    <div class="d-flex align-items-center gap-3">
+        <div class="btn-group" role="group" aria-label="Controles de tamanho da fonte">
+            <button type="button" class="btn btn-light btn-sm"
+                    onclick="alterarFonte(-1)" aria-label="Diminuir tamanho da fonte">
+                A-
+            </button>
+
+            <button type="button" class="btn btn-light btn-sm"
+                    onclick="restaurarFonte()" aria-label="Restaurar tamanho da fonte">
+                A
+            </button>
+
+            <button type="button" class="btn btn-light btn-sm"
+                    onclick="alterarFonte(1)" aria-label="Aumentar tamanho da fonte">
+                A+
+            </button>
+        </div>
+
+        <span class="text-white">Gestão de Patrimônio</span>
+    </div>
 </nav>
 
 <div class="container py-5">
@@ -28,7 +49,7 @@
             <div class="card indicador shadow-sm border-0">
                 <div class="card-body">
                     <p class="text-secondary mb-1">Total de ferramentas</p>
-                    <h2 class="fw-bold">120</h2>
+                    <h2 class="fw-bold">{{ total }}</h2>
                     <span class="text-secondary">Itens cadastrados</span>
                 </div>
             </div>
@@ -38,7 +59,7 @@
             <div class="card indicador shadow-sm border-0">
                 <div class="card-body">
                     <p class="text-secondary mb-1">Disponíveis</p>
-                    <h2 class="fw-bold text-success">85</h2>
+                    <h2 class="fw-bold text-success">{{ disponiveis }}</h2>
                     <span class="text-secondary">No almoxarifado</span>
                 </div>
             </div>
@@ -48,7 +69,7 @@
             <div class="card indicador shadow-sm border-0">
                 <div class="card-body">
                     <p class="text-secondary mb-1">Emprestadas</p>
-                    <h2 class="fw-bold text-warning">35</h2>
+                    <h2 class="fw-bold text-warning">{{ emprestadas }}</h2>
                     <span class="text-secondary">Em utilização</span>
                 </div>
             </div>
@@ -95,6 +116,31 @@
     </div>
 
 </div>
+
+<script>
+    let tamanhoFonte = Number(localStorage.getItem("tamanhoFonte")) || 16;
+
+    function aplicarFonte() {
+        document.documentElement.style.fontSize = tamanhoFonte + "px";
+        localStorage.setItem("tamanhoFonte", tamanhoFonte);
+    }
+
+    function alterarFonte(valor) {
+        tamanhoFonte += valor * 2;
+
+        if (tamanhoFonte < 12) tamanhoFonte = 12;
+        if (tamanhoFonte > 24) tamanhoFonte = 24;
+
+        aplicarFonte();
+    }
+
+    function restaurarFonte() {
+        tamanhoFonte = 16;
+        aplicarFonte();
+    }
+
+    aplicarFonte();
+</script>
 
 </body>
 </html>
